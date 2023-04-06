@@ -11,6 +11,11 @@ const createUserSchema = Joi.object({
   'string.email': '{{#label}} must be a valid email',
 });
 
-module.exports = { createUserSchema };
+const loginSchema = Joi.object({
+  email: Joi.string().required().email().label('email'),
+  password: Joi.string().required().min(6).label('password'),
+}).messages({
+  'any.required': 'Some required fields are missing',
+});
 
-// Tentando o uso do JOI no requisito 04
+module.exports = { createUserSchema, loginSchema };

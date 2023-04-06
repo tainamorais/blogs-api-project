@@ -18,6 +18,10 @@ const getByEmail = async (email) => {
 const create = async (displayName, email, password, image) => {
   const error = validator.createUserValidator({ displayName, email, password, image });
 
+  if (email.length < 1) {
+    return { type: 'INVALID_VALUE', message: 'Some required fields are missing' };
+  }
+
   if (error.type) return error;
 
   const isEmailCreated = await User.findOne({ where: { email } });

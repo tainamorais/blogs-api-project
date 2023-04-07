@@ -3,8 +3,16 @@ const validator = require('../middlewares/validator');
 const { tokenGenerator } = require('../utils/jwt');
 
 // Precisei criar para fazer os testes de get e post
+/*
+Função GET ALL sem excluir password
 const getAll = async () => {
   const users = await User.findAll();
+  return users;
+};
+*/
+
+const getAll = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
   return users;
 };
 

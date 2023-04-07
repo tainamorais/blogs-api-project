@@ -11,6 +11,16 @@ const getAll = async (_req, res) => {
   res.status(200).json(users);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const { type, message } = await UserService.getById(id);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(200).json(message);
+};
+
 const create = async (req, res) => {
   const { displayName, email, password, image } = req.body;
 
@@ -18,7 +28,7 @@ const create = async (req, res) => {
 
   if (type) return res.status(errorMap.mapError(type)).json({ message });
 
-  res.status(201).json({ token: message });
+  return res.status(201).json({ token: message });
 };
 
 /*
@@ -45,5 +55,6 @@ const create = async (req, res) => {
 
 module.exports = {
   getAll,
+  getById,
   create,
 };

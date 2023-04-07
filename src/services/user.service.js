@@ -23,6 +23,16 @@ const getByEmail = async (email) => {
   return user;
 };
 
+const getById = async (id) => {
+  const user = await User.findOne({ where: { id }, attributes: { exclude: ['password'] } });
+
+  if (!user) {
+    return { type: 'NOT_FOUND', message: 'User does not exist' };
+  }
+
+  return { type: null, message: user };
+};
+
 const create = async (displayName, email, password, image) => {
   const error = validator.createUserValidator({ displayName, email, password, image });
 
@@ -57,5 +67,6 @@ const create = async (displayName, email, password, image) => {
 module.exports = {
   getAll,
   getByEmail,
+  getById,
   create,
 };

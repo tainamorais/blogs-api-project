@@ -51,4 +51,14 @@ try {
 }
 };
 
-module.exports = { createUserValidator, loginValidator, tokenValidator };
+const createCategoryValidator = ({ name }) => {
+  const { error } = schemas.createCategorySchema.validate({ name });
+
+  if (error) {
+    return { type: 'INVALID_VALUE', message: error.message };
+  }
+
+  return { type: null, message: '' };
+};
+
+module.exports = { createUserValidator, loginValidator, tokenValidator, createCategoryValidator };

@@ -18,4 +18,10 @@ const loginSchema = Joi.object({
   'any.required': 'Some required fields are missing',
 });
 
-module.exports = { createUserSchema, loginSchema };
+const createCategorySchema = Joi.object({
+  name: Joi.string().required().min(1).label('name'),
+}).messages({
+  'any.required': '{{#label}} is required',
+});
+
+module.exports = { createUserSchema, loginSchema, createCategorySchema };

@@ -3,6 +3,7 @@ const express = require('express');
 const userRoutes = require('./routes/user.routes');
 const loginRoutes = require('./routes/login.routes');
 const categoryRoutes = require('./routes/category.routes');
+const postRoutes = require('./routes/post.routes');
 
 // ...
 
@@ -25,5 +26,7 @@ app.use('/user', userRoutes);
 app.use('/login', loginRoutes);
 
 app.use('/categories', categoryRoutes);
+
+app.use('/post', postRoutes);
 
 module.exports = app;

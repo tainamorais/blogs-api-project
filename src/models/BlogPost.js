@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     userId: { type: DataTypes.INTEGER, foreignKey: true },
-    published: DataTypes.DATE,
     updated: DataTypes.DATE,
+    published: DataTypes.DATE,
   }, {
     tableName: 'blog_posts',
     underscored: true,

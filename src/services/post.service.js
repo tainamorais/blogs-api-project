@@ -41,7 +41,44 @@ const getById = async (id) => {
   return { type: null, message: post };
 };
 
+const remove = async (id, userId) => {
+  // Recuperar o post através do id passado por parâmetro
+  const userPost = await BlogPost.findByPk(id);
+
+  if (!userPost) {
+    return { type: 'NOT_FOUND', message: 'Post does not exist' };
+  }
+
+  // Através do post recuperado, em seu id, comparar se é o mesmo do userId
+  if (userPost.userId !== userId) {
+    return { type: 'NOT_AUTHORIZED', message: 'Unauthorized user' };
+  }
+
+  await BlogPost.destroy({ where: { id } });
+
+  return { type: null, message: null };
+};
+
+const create = async (title, content, userId) => {
+  // const posts = await BlogPost.findAll();
+
+  await BlogPost.create({
+    title,
+    content,
+    userId,
+    updated: new Date(),
+    published: new Date(),
+  });
+
+  const createdPost = await BlogPost
+    .findOne({ where: { title }, attributes: { exclude: ['user_id'] } });
+
+  return { type: null, message: createdPost };
+};
+
 module.exports = {
   getAll,
   getById,
+  remove,
+  create,
 };

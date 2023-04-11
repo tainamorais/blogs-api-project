@@ -24,4 +24,12 @@ const createCategorySchema = Joi.object({
   'any.required': '{{#label}} is required',
 });
 
-module.exports = { createUserSchema, loginSchema, createCategorySchema };
+const createPostSchema = Joi.object({
+  title: Joi.string().required().label('title'),
+  content: Joi.string().required().label('content'),
+  categoryIds: Joi.array().required().label('categoryIds'),
+}).messages({
+  'any.required': 'Some required fields are missing',
+});
+
+module.exports = { createUserSchema, loginSchema, createCategorySchema, createPostSchema };

@@ -43,7 +43,7 @@ REQ. 16 PASSA, POIS A FUNÇÃO POST FOI CRIADA, SEM VALIDAÇÕES.
 VOU JOGAR NO GITHUB E CONTINUAR A DESENVOLVIMENTO DA FUNÇÃO POST - CREATE.
 */
 const create = async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, categoryIds } = req.body;
 
   const user = await UserService.getByEmail(req.user.data);
   // console.log(user);
@@ -51,8 +51,9 @@ const create = async (req, res) => {
   const userId = user.dataValues.id;
   // console.log(userId);
   
-  const { message } = await PostService.create(title, content, userId);
-  // const { type, message } = await PostService.create(title, content, userId);
+  const { type, message } = await PostService.create(title, content, userId, categoryIds);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
 
   return res.status(201).json(message);
 };

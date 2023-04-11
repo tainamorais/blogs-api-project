@@ -61,4 +61,20 @@ const createCategoryValidator = ({ name }) => {
   return { type: null, message: '' };
 };
 
-module.exports = { createUserValidator, loginValidator, tokenValidator, createCategoryValidator };
+const createPostValidator = ({ title, content, categoryIds }) => {
+  const { error } = schemas.createPostSchema.validate({ title, content, categoryIds });
+
+  if (error) {
+    return { type: 'INVALID_VALUE', message: error.message };
+  }
+
+  return { type: null, message: '' };
+};
+
+module.exports = {
+  createUserValidator,
+  loginValidator,
+  tokenValidator,
+  createCategoryValidator,
+  createPostValidator,
+};

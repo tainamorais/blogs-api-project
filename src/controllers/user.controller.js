@@ -31,6 +31,21 @@ const create = async (req, res) => {
   return res.status(201).json({ token: message });
 };
 
+const remove = async (req, res) => {
+  const user = await UserService.getByEmail(req.user.data);
+  // console.log(user);
+  
+  // captura o id logado com token
+  const userId = user.dataValues.id;
+  // console.log(userId);
+
+  const { type, message } = await UserService.remove(userId);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(204).end();
+};
+
 /*
 Requisito 04: Estava seguindo course, fazendo jwt no controller, mas não é o ideal.
 Mudei para o service e isolei o jwt em arquivo isolado.
@@ -57,4 +72,5 @@ module.exports = {
   getAll,
   getById,
   create,
+  remove,
 };

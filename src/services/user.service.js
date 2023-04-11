@@ -56,6 +56,12 @@ const create = async (displayName, email, password, image) => {
   // return ({ type: null, message: newUser });
 };
 
+const remove = async (id) => {
+  await User.destroy({ where: { id } });
+
+  return { type: null, message: null };
+};
+
 /*
 CAMINHO FELIZ
 const create = async (displayName, email, password, image) => {
@@ -69,4 +75,5 @@ module.exports = {
   getByEmail,
   getById,
   create,
+  remove,
 };

@@ -58,9 +58,18 @@ const create = async (req, res) => {
   return res.status(201).json(message);
 };
 
+const search = async (req, res) => {
+  const { q } = req.query;
+
+  const { message } = await PostService.search(q);
+
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getAll,
   getById,
   remove,
   create,
+  search,
 };

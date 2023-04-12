@@ -6,6 +6,9 @@ const { tokenValidator } = require('../middlewares/validator');
 const router = Router();
 
 router.get('/', tokenValidator, postController.getAll);
+
+// A ordem das routes influencia. O search no final fazia a busca de search por id. Não entendi bem...
+router.get('/search', tokenValidator, postController.search);
 router.get('/:id', tokenValidator, postController.getById);
 
 router.post('/', tokenValidator, postController.create);

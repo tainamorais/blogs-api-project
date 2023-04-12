@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, User, Category } = require('../models');
 const PostCategoryService = require('./postCategory.service');
 const validator = require('../middlewares/validator');
@@ -105,9 +106,34 @@ const create = async (title, content, userId, categoryIds) => {
   return { type: null, message: createdPost };
 };
 
+/*
+REQ. 18
+Pesquisa sobre operadores de comparação em sequelize (usar Op.like).
+OBS: O termo busca em 2 colunas diferentes, usar Op.or + Op.like.
+https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
+*/
+
+const search = async (term) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${term}%` } },
+        { content: { [Op.like]: `%${term}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return { type: null, message: posts };
+};
+
 module.exports = {
   getAll,
   getById,
   remove,
   create,
+  search,
 };

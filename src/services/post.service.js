@@ -130,10 +130,37 @@ const search = async (term) => {
   return { type: null, message: posts };
 };
 
+const isBodyValidToUpdate = (title, content) => title && content;
+
+const update = async (id, userId, title, content) => {
+  if (!isBodyValidToUpdate(title, content)) return { type: 'INVALID_VALUE', message: missing };
+
+  // Buscar o post no DB
+  const findPostById = await BlogPost.findByPk(id);
+  if (!findPostById) return { type: 'INVALID_VALUE', message: 'Post does not exist' };
+  // console.log(findPostById);
+
+  // Recuperar o id da pessoa que realizou o post e comparar com o id logado para que seja ou não permitido o update
+  const postUserId = findPostById.dataValues.userId;
+  if (postUserId !== userId) return { type: 'NOT_AUTHORIZED', message: 'Unauthorized user' };
+
+  await BlogPost.update({ title, content }, { where: { id } });
+
+  const updatedPost = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+  ],
+  });
+
+  return { type: null, message: updatedPost };
+};
+
 module.exports = {
   getAll,
   getById,
   remove,
   create,
   search,
+  update,
 };

@@ -66,10 +66,25 @@ const search = async (req, res) => {
   return res.status(200).json(message);
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+
+  const user = await UserService.getByEmail(req.user.data);
+  const userId = user.dataValues.id;
+
+  const { type, message } = await PostService.update(id, userId, title, content);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getAll,
   getById,
   remove,
   create,
   search,
+  update,
 };

@@ -12,6 +12,7 @@ router.get('/search', tokenValidator, postController.search);
 router.get('/:id', tokenValidator, postController.getById);
 
 router.post('/', tokenValidator, postController.create);
+router.put('/:id', tokenValidator, postController.update);
 
 /*
 FIZ ANTES DA FUNÇÃO POST - CREATE.
